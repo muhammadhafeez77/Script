@@ -5,7 +5,8 @@
 
 int main(int argc, char *argv[])
 {
-  if (argv[1] == '\0')
+  (void)argc;
+  if (argv[1] == NULL)
   {
     argv[1] = argv[0];
   }
