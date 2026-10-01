@@ -8,16 +8,19 @@
 #include <unistd.h>
 // 77//================== Declerations ===================
 
-char USER[] = "coffee"; // username //must be same here and configuration.nix
-char PATH[30];
+// char USER[] = "coffee";
+char PATH[30] =
+    "/home/coffee"; // username //must be same here and configuration.nix
+
 char command[500];
 char folder_name[50] = "NULL";
 char file_name[50] = "NULL";
+void cd(char path[30]);
 
 int main(int argc, char *argv[])
 {
 
-  snprintf(PATH, sizeof(PATH), "/home/%s", USER);
+  //  snprintf(PATH, sizeof(PATH), "/home/%s", USER);
   (void)argc;
   if (argv[1] == NULL)
   {
@@ -47,10 +50,16 @@ int main(int argc, char *argv[])
   snprintf(command, sizeof(command),
            "cd .. && mkdir Pictures && cd - && "
            "cp castle.jpg alena-aenami-dreamy-1k.jpg %s/Pictures && "
-           "cd %s/.config && mkdir qtile nvim picom oxwm alacritty tmux ",
+           "cd %s/.config  ",
            PATH, PATH);
   system(command);
-
+  chdir("..");
+  mkdir("qtile", 0755);
+  mkdir("nvim", 0755);
+  mkdir("picom", 0755);
+  mkdir("oxwm", 0755);
+  mkdir("alacritty", 0755);
+  mkdir("tmux", 0755);
   snprintf(command, sizeof(command),
            "cp /etc/nixos/hardware-configuration.nix %s/%s && "
            "rm -rf /etc/nixos "
@@ -60,6 +69,20 @@ int main(int argc, char *argv[])
 
   printf("\n");
   return 0;
+}
+
+void cd(char local_path[30])
+{
+  local_path[strcspn(local_path, "\n")] == '\0';
+  if (strlen(local_path) == 0)
+  {
+    chdir("..");
+  }
+  else
+  {
+    snprintf(command, sizeof(command), "cd %s", local_path);
+    system(command);
+  }
 }
 // snprintf(command,sizeof(command), "mkdir %s && cd %s && touch
 // %s",folder_name,folder_name,file_name); system(command);
