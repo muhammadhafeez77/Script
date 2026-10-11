@@ -1,5 +1,8 @@
-// create failsafe for making and moving folders // example at end , create
-// functions
+// create failsafe for making and moving folders , create functions
+// make git repo for themes (fonts , icons )
+// it is themes AT GIT_CONFIG run the rg (username ) to find instances of
+// username and find command to turn them to user and vice verca . should
+// include in this script
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,19 +11,18 @@
 #include <unistd.h>
 // 77//================== Declerations ===================
 
-// char USER[] = "coffee";
-char PATH[30] =
-    "/home/coffee"; // username //must be same here and configuration.nix
+// change "coffee" to your username , must be same here and configuration.nix
+// or any other config that has that username.
+char PATH[] = "/home/coffee";
+char END[] = "sudo chown -R coffee:coffee /home/coffee";
 
 char command[500];
-char folder_name[50] = "NULL";
-char file_name[50] = "NULL";
-void cd(char path[30]);
+void cd(char path[sizeof(PATH) + 10]);
+void killgit();
 
 int main(int argc, char *argv[])
 {
 
-  //  snprintf(PATH, sizeof(PATH), "/home/%s", USER);
   (void)argc;
   if (argv[1] == NULL)
   {
@@ -33,81 +35,127 @@ int main(int argc, char *argv[])
     fprintf(stderr, "\n usage :  %s  [--execute] to execute\n  ", argv[0]);
     fprintf(stderr, "\n usage : Run as [ root ]  ");
     fprintf(stderr, "\n must have : git  ");
-    exit(1);
+    exit(EXIT_FAILURE);
   }
 
   // 77// ================= Execution  =====================
-  printf("\n\n ==== Begin Execution =====\n  ");
+  printf("\n\n\t ==== Begin Execution =====\n  ");
 
-  strcpy(folder_name, "nixos-dotfiles");
+  cd(PATH);
+  mkdir("Pictures", 0755);
+  mkdir("Downloads", 0755);
+  mkdir("Documents", 0755);
+  snprintf(command, sizeof(command),
+           " git clone https://github.com/muhammadhafeez77/Nixos-Flakes.git "
+           "./nixos-dotfiles ");
+  system(command);
+
+  cd("nixos-dotfiles");
+  killgit();
+  system("cp castle.jpg alena-aenami-dreamy-1k.jpg ../Pictures/");
+  system("rm castle.jpg alena-aenami-dreamy-1k.jpg ");
   snprintf(
       command, sizeof(command),
-      "cd %s && mkdir %s && cd %s &&"
-      " git clone https : // github.com/muhammadhafeez77/Nixos-Flakes.git ",
-      PATH, folder_name, folder_name);
+      "cp /etc/nixos/hardware-configuration.nix ./hardware-configuration.nix"
+      " && rm /etc/nixos/ && cp -r %s/nixos-dotfiles /etc/nixos",
+      PATH);
   system(command);
 
-  snprintf(command, sizeof(command),
-           "cd .. && mkdir Pictures && cd - && "
-           "cp castle.jpg alena-aenami-dreamy-1k.jpg %s/Pictures && "
-           "cd %s/.config  ",
-           PATH, PATH);
-  system(command);
-  chdir("..");
-  mkdir("qtile", 0755);
-  mkdir("nvim", 0755);
-  mkdir("picom", 0755);
-  mkdir("oxwm", 0755);
-  mkdir("alacritty", 0755);
-  mkdir("tmux", 0755);
-  snprintf(command, sizeof(command),
-           "cp /etc/nixos/hardware-configuration.nix %s/%s && "
-           "rm -rf /etc/nixos "
-           "&& cp -r %s/%s /etc/nixos",
-           PATH, folder_name, PATH, folder_name);
-  system(command);
+  cd(PATH);
+  system("rm .vimrc");
+  system("mkdir -p .config");
+  cd(".config");
 
-  printf("\n");
-  return 0;
+  printf("\n\n\t ===== INSTALLING CONFIGS =====\n\n");
+
+  system("git clone https://github.com/muhammadhafeez77/Themes ./themes");
+  cd("themes");
+  killgit();
+  system("mv gtk-3.0 Mousepad Thunar xfce4 ../");
+  system("mv fonts /usr/share/fonts");
+  system("mv themes /usr/share/themes");
+  system("mv icons /usr/share/icons");
+
+  system("git clone https://github.com/muhammadhafeez77/Qtile ./qtile");
+  cd("qtile");
+  killgit();
+  cd("..");
+
+  system("git clone https://github.com/muhammadhafeez77/Neovim ./nvim");
+  cd("nvim");
+  system("mv clang-format ../../.clang-format");
+  system("mv vimrc ../../.vimrc");
+  system("mv README.md CONFIG.md");
+  killgit();
+  system("mv CONFIG.md README.md");
+  cd("..");
+
+  system("git clone https://github.com/muhammadhafeez77/Picom ./picom");
+  cd("picom");
+  killgit();
+  cd("..");
+
+  system("git clone https://github.com/muhammadhafeez77/Oxwm ./oxwm");
+  cd("oxwm");
+  killgit();
+  cd("..");
+
+  system("git clone https://github.com/muhammadhafeez77/Alacritty ./alacritty");
+  cd("alacritty");
+  killgit();
+  cd("..");
+
+  system("git clone https://github.com/muhammadhafeez77/Tmux ./tmux");
+  cd("tmux");
+  killgit();
+
+  cd(PATH);
+  system("mv .bashrc ._backup__bashrc");
+  system("mv .zshrc ._backup__zshrc");
+  mkdir(".zsh-theme", 0755);
+
+  cd("Documents");
+  system("git clone https://github.com/muhammadhafeez77/Zshrc ./zsh");
+  cd("zsh");
+  killgit();
+
+  system("mv dircolors /usr/bin/");
+  system("mv bash-completion zsh-autosuggestions zsh-syntax-highlighting "
+         "/usr/share/");
+  system("mv bashrc ../../.bashrc");
+  system("mv zshrc ../../.zshrc");
+  system("mv xiong-chiamiov.zsh-theme ../../.zsh-theme/");
+  cd("..");
+  system("rm -rf zsh");
+
+  cd("/root");
+  system("mv .vimrc ._backup__vimrc ; mkdir -p .config");
+  cd(".config");
+  system("git clone https://github.com/muhammadhafeez77/Neovim ./nvim");
+  cd("nvim");
+  system("mv clang-format ../../.clang-format");
+  system("mv vimrc ../../.vimrc");
+  killgit();
+
+  system(END);
+  return EXIT_SUCCESS;
 }
 
-void cd(char local_path[30])
+void cd(char local_path[sizeof(PATH) + 10])
 {
-  local_path[strcspn(local_path, "\n")] == '\0';
-  if (strlen(local_path) == 0)
-  {
-    chdir("..");
-  }
-  else
+  // local_path[strcspn(local_path, "\n")] == '\0';
+  if (strlen(local_path) > 1)
   {
     snprintf(command, sizeof(command), "cd %s", local_path);
     system(command);
   }
+  else
+  {
+    chdir("..");
+  }
 }
-// snprintf(command,sizeof(command), "mkdir %s && cd %s && touch
-// %s",folder_name,folder_name,file_name); system(command);
-// // ==========================================
-//    // 1. Variable-based Dynamic CD (chdir)
-//    // ==========================================
-//    // Equivalent to: cd /home/user/.config
-//    snprintf(path_buffer, sizeof(path_buffer), "%s/.config", PATH);
-//
-//    if (chdir(path_buffer) == 0) {
-//        printf("Successfully moved to: %s\n", path_buffer);
-//    } else {
-//        perror("Failed to change directory"); // Prints the exact error if it
-//        fails
-//    }
-//
-//    // ==========================================
-//    // 2. Variable-based Dynamic MKDIR
-//    // ==========================================
-//    // Equivalent to: mkdir /home/user/nixos-config
-//    snprintf(path_buffer, sizeof(path_buffer), "%s/%s", PATH, folder_name);
-//
-//    // 0755 represents standard Linux directory read/write/execute permissions
-//    if (mkdir(path_buffer, 0755) == 0) {
-//        printf("Successfully created folder: %s\n", path_buffer);
-//    } else {
-//        perror("Failed to create directory");
-//    }
+void killgit()
+{
+  system("rm -rf .git");
+  system("rm .gitignore README.md");
+}
