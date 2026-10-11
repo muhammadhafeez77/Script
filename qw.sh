@@ -3,6 +3,6 @@
 
 set -e
 
-g++ -Wall -Wextra nix-script.c -o output
+gcc -Wall -Wextra nix-script.c -o output
 
 ./output

@@ -17,7 +17,7 @@ char PATH[] = "/home/coffee";
 char END[] = "sudo chown -R coffee:coffee /home/coffee";
 
 char command[500];
-void cd(char path[sizeof(PATH) + 10]);
+void cd(char path[]);
 void killgit();
 
 int main(int argc, char *argv[])
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
   return EXIT_SUCCESS;
 }
 
-void cd(char local_path[sizeof(PATH) + 10])
+void cd(char local_path[])
 {
   // local_path[strcspn(local_path, "\n")] == '\0';
   if (strlen(local_path) > 1)
