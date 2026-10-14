@@ -1,8 +1,5 @@
 // create failsafe for making and moving folders , create functions
-// make git repo for themes (fonts , icons )
-// it is themes AT GIT_CONFIG run the rg (username ) to find instances of
-// username and find command to turn them to user and vice verca . should
-// include in this script
+// include themes in this script
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,21 +29,32 @@ int main(int argc, char *argv[])
 
   if (strcmp(argv[1], "--execute") != 0)
   {
-    fprintf(stderr, "\n usage :  %s  [--execute] to execute\n  ", argv[0]);
+    fprintf(stderr, "\n usage :  %s  [--execute] to execute  ", argv[0]);
     fprintf(stderr, "\n usage : Run as [ root ]  ");
-    fprintf(stderr, "\n must have : git  ");
-    exit(EXIT_FAILURE);
+    fprintf(stderr, "\n must have : git  \n\n");
+    exit(0);
   }
 
   // 77// ================= Execution  =====================
+
+  printf("Are you sure you want to continue:[y,n]  : ");
+
+  if (scanf("%c", command) == 1 && (command[0] != 'y' && command[0] != 'Y'))
+  {
+    fprintf(stderr, "\n i hate you res  \n\n");
+    fprintf(stderr, "\n\n\t ==== Ending Execution =====\n  ");
+    exit(0);
+  }
+
   printf("\n\n\t ==== Begin Execution =====\n  ");
 
+  fprintf(stderr, "\n i hate you res  \n\n");
   cd(PATH);
   mkdir("Pictures", 0755);
   mkdir("Downloads", 0755);
   mkdir("Documents", 0755);
   snprintf(command, sizeof(command),
-           " git clone https://github.com/muhammadhafeez77/Nixos-Flakes.git "
+           " git clone https://github.com/muhammadhafeez77/Nixos-Flakes.git"
            "./nixos-dotfiles ");
   system(command);
 
@@ -100,7 +108,7 @@ int main(int argc, char *argv[])
   killgit();
   cd("..");
 
-  system("git clone https://github.com/muhammadhafeez77/Alacritty ./alacritty");
+  system("git clone https://github.com/muhammadhafeez77/Alacritty./alacritty");
   cd("alacritty");
   killgit();
   cd("..");
@@ -138,6 +146,7 @@ int main(int argc, char *argv[])
   killgit();
 
   system(END);
+  printf(stderr, "\n\n\t ==== Finished =====\n  ");
   return EXIT_SUCCESS;
 }
 
