@@ -1,11 +1,17 @@
-// create failsafe for making and moving folders , create functions
-// include themes in this script
+// LAST :: PROGRESS BAR
+//  include themes.git in this script
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+
+#define RED "\x1b[31m"
+#define GREEN "\x1b[32m"
+#define YELLOW "\x1b[33m"
+#define RESET "\x1b[0m"
+
 // 77//================== Declerations ===================
 
 // change "coffee" to your username , must be same here and configuration.nix
@@ -29,26 +35,26 @@ int main(int argc, char *argv[])
 
   if (strcmp(argv[1], "--execute") != 0)
   {
-    fprintf(stderr, "\n usage :  %s  [--execute] to execute  ", argv[0]);
+    fprintf(stderr, RED "\n usage :  %s  [--execute] to execute  ", argv[0]);
     fprintf(stderr, "\n usage : Run as [ root ]  ");
-    fprintf(stderr, "\n must have : git  \n\n");
+    fprintf(stderr, "\n must have : git  \n\n" RESET);
     exit(0);
   }
-
-  // 77// ================= Execution  =====================
 
   printf("Are you sure you want to continue:[y,n]  : ");
 
   if (scanf("%c", command) == 1 && (command[0] != 'y' && command[0] != 'Y'))
   {
-    fprintf(stderr, "\n i hate you res  \n\n");
-    fprintf(stderr, "\n\n\t ==== Ending Execution =====\n  ");
+    fprintf(stderr, RED "\n i hate you res  \n\n");
+    fprintf(stderr, "\n\n\t ==== Ending Execution =====\n  " RESET);
     exit(0);
   }
 
-  printf("\n\n\t ==== Begin Execution =====\n  ");
+  // 77// ================= Execution  =====================
+  //
+  printf(GREEN "\n\n\t ==== Begin Execution =====\n  " RESET);
+  fprintf(stderr, RED "\n\n i hate you res  \n" RESET);
 
-  fprintf(stderr, "\n i hate you res  \n\n");
   cd(PATH);
   mkdir("Pictures", 0755);
   mkdir("Downloads", 0755);
@@ -146,7 +152,7 @@ int main(int argc, char *argv[])
   killgit();
 
   system(END);
-  printf(stderr, "\n\n\t ==== Finished =====\n  ");
+  printf(GREEN "\n\n\t ==== Finished =====\n  " RESET);
   return EXIT_SUCCESS;
 }
 
