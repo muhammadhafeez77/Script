@@ -89,6 +89,8 @@ int main(int argc, char *argv[])
   system("mv fonts /usr/share/fonts");
   system("mv themes /usr/share/themes");
   system("mv icons /usr/share/icons");
+  cd("..");
+  system("rm -rf themes");
 
   system("git clone https://github.com/muhammadhafeez77/Qtile ./qtile");
   cd("qtile");
