@@ -57,7 +57,6 @@ int main(int argc, char *argv[])
 
   cd(PATH);
   system("mkdir -p /root/.config");
-  mkdir("Pictures", 0755);
   mkdir("Downloads", 0755);
   mkdir("Documents", 0755);
   snprintf(command, sizeof(command),
@@ -67,8 +66,6 @@ int main(int argc, char *argv[])
 
   cd("nixos-dotfiles");
   killgit();
-  system("cp castle.jpg alena-aenami-dreamy-1k.jpg ../Pictures/");
-  system("rm castle.jpg alena-aenami-dreamy-1k.jpg ");
   system(
       "cp /etc/nixos/hardware-configuration.nix ./hardware-configuration.nix");
   system(" mv /etc/nixos/ /etc/backup_nixos ");
@@ -77,12 +74,17 @@ int main(int argc, char *argv[])
   system(command);
   system("ln -s /etc/nixos ./nixos-dotfiles");
 
+  printf("\n\n\t ===== INSTALLING CONFIGS =====\n\n");
   cd(PATH);
   system("rm .vimrc");
   system("mkdir -p .config");
-  cd(".config");
 
-  printf("\n\n\t ===== INSTALLING CONFIGS =====\n\n");
+  system("git clone https://github.com/muhammadhafeez77/walls ./Pictures");
+  cd("Pictures");
+  killgit();
+  cd("..");
+
+  cd(".config");
 
   system("git clone https://github.com/muhammadhafeez77/Themes ./themes");
   cd("themes");
