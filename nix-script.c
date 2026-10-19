@@ -56,6 +56,7 @@ int main(int argc, char *argv[])
   fprintf(stderr, RED "\n\n i hate you res  \n" RESET);
 
   cd(PATH);
+  system("mkdir -p /root/.config");
   mkdir("Pictures", 0755);
   mkdir("Downloads", 0755);
   mkdir("Documents", 0755);
@@ -68,12 +69,13 @@ int main(int argc, char *argv[])
   killgit();
   system("cp castle.jpg alena-aenami-dreamy-1k.jpg ../Pictures/");
   system("rm castle.jpg alena-aenami-dreamy-1k.jpg ");
-  snprintf(
-      command, sizeof(command),
-      "cp /etc/nixos/hardware-configuration.nix ./hardware-configuration.nix"
-      " && rm /etc/nixos/ && cp -r %s/nixos-dotfiles /etc/nixos",
-      PATH);
+  system(
+      "cp /etc/nixos/hardware-configuration.nix ./hardware-configuration.nix");
+  system(" mv /etc/nixos/ /etc/backup_nixos ");
+  cd(PATH);
+  snprintf(command, sizeof(command), "mv %s/nixos-dotfiles /etc/nixos", PATH);
   system(command);
+  system("ln -s /etc/nixos ./nixos-dotfiles");
 
   cd(PATH);
   system("rm .vimrc");
@@ -98,6 +100,7 @@ int main(int argc, char *argv[])
   cd("..");
 
   system("git clone https://github.com/muhammadhafeez77/Neovim ./nvim");
+  system("cp -r ./nvim /root/.config/");
   cd("nvim");
   system("mv clang-format ../../.clang-format");
   system("mv vimrc ../../.vimrc");
@@ -145,10 +148,11 @@ int main(int argc, char *argv[])
   system("rm -rf zsh");
 
   cd("/root");
-  system("mv .vimrc ._backup__vimrc ; mkdir -p .config");
-  cd(".config");
-  system("git clone https://github.com/muhammadhafeez77/Neovim ./nvim");
-  cd("nvim");
+  system("mv .bashrc ._backup__bashrc");
+  system("mv .zshrc ._backup__zshrc");
+  system("mv .vimrc ._backup__vimrc ");
+
+  cd(".config/nvim");
   system("mv clang-format ../../.clang-format");
   system("mv vimrc ../../.vimrc");
   killgit();
@@ -165,10 +169,6 @@ void cd(char local_path[])
   {
     snprintf(command, sizeof(command), "cd %s", local_path);
     system(command);
-  }
-  else
-  {
-    chdir("..");
   }
 }
 void killgit()
