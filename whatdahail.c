@@ -194,7 +194,7 @@ int main(int argc, char *argv[])
 
   clone(GH "Picom", "picom", 0);
   clone(GH "Oxwm", "oxwm", 0);
-  clone(GH "Alacritty", "alacritty", 0);
+  clone(GH "terminals", "terminals", 0);
   clone(GH "Tmux", "tmux", 0);
 
   // ---- shell -----------------------------------------------------------

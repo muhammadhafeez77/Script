@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
   killgit();
   cd("..");
 
-  system("git clone https://github.com/muhammadhafeez77/Alacritty./alacritty");
+  system("git clone https://github.com/muhammadhafeez77/terminals ./terminals");
   cd("alacritty");
   killgit();
   cd("..");
